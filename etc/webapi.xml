@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <!-- Cms Page -->
+    <route url="/V1/snowdog/cmsPage/:pageId" method="GET">
+        <service class="Snowdog\CmsApi\Api\PageManagerInterface" method="getById"/>
+        <resources>
+            <resource ref="Magento_Cms::page"/>
+        </resources>
+    </route>
+    <route url="/V1/snowdog/cmsPage/search" method="GET">
+        <service class="Snowdog\CmsApi\Api\PageManagerInterface" method="getList"/>
+        <resources>
+            <resource ref="Magento_Cms::page"/>
+        </resources>
+    </route>
+    <!-- Cms Block -->
+    <route url="/V1/snowdog/cmsBlock/:blockId" method="GET">
+        <service class="Snowdog\CmsApi\Api\BlockManagerInterface" method="getById"/>
+        <resources>
+            <resource ref="Magento_Cms::block"/>
+        </resources>
+    </route>
+    <route url="/V1/snowdog/cmsBlock/search" method="GET">
+        <service class="Snowdog\CmsApi\Api\BlockManagerInterface" method="getList"/>
+        <resources>
+            <resource ref="Magento_Cms::block"/>
+        </resources>
+    </route>
+</routes>

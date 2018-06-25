@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Snowdog\CmsApi\Api\PageManagerInterface"
+                type="Snowdog\CmsApi\Model\PageManager" />
+    <preference for="Snowdog\CmsApi\Api\BlockManagerInterface"
+                type="Snowdog\CmsApi\Model\BlockManager" />
+</config>
