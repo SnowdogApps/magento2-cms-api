@@ -5,6 +5,8 @@ The module provides endpoints to get CMS blocks and pages filtered.
 ### 1. Installation:
 
 `composer require snowdog/module-cms-api`
+`bin/magento module:enable Snowdog_CmsApi`
+`bin/magento setup:upgrade`
 
 ### 2. Available endpoints: 
 
