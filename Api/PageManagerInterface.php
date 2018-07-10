@@ -11,6 +11,13 @@ interface PageManagerInterface
     public function getById($pageId);
 
     /**
+     * @param string $identifier
+     * @param int $storeId
+     * @return \Magento\Cms\Api\Data\PageInterface
+     */
+    public function getByIdentifier($identifier, $storeId = null);
+
+    /**
      * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
      * @return \Magento\Cms\Api\Data\PageSearchResultsInterface
      * @throws \Magento\Framework\Exception\LocalizedException

@@ -3,7 +3,11 @@
 namespace Snowdog\CmsApi\Model;
 
 use Magento\Cms\Api\BlockRepositoryInterface;
+use Magento\Cms\Api\Data\BlockInterface;
+use Magento\Cms\Model\BlockFactory;
+use Magento\Cms\Model\ResourceModel\Block;
 use Magento\Cms\Model\Template\FilterProvider;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Snowdog\CmsApi\Api\BlockManagerInterface;
 
 class BlockManager implements BlockManagerInterface
@@ -18,12 +22,26 @@ class BlockManager implements BlockManagerInterface
      */
     private $filterProvider;
 
+    /**
+     * @var BlockFactory
+     */
+    private $blockFactory;
+
+    /**
+     * @var Block
+     */
+    private $blockResource;
+
     public function __construct(
         BlockRepositoryInterface $blockRepository,
-        FilterProvider $filterProvider
+        FilterProvider $filterProvider,
+        BlockFactory $blockFactory,
+        Block $blockResource
     ) {
         $this->blockRepository = $blockRepository;
         $this->filterProvider = $filterProvider;
+        $this->blockFactory = $blockFactory;
+        $this->blockResource = $blockResource;
     }
 
     /**
@@ -32,6 +50,27 @@ class BlockManager implements BlockManagerInterface
     public function getById($blockId)
     {
         $block = $this->blockRepository->getById($blockId);
+        $content = $this->getBlockContentFiltered($block->getContent());
+        $block->setContent($content);
+
+        return $block;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getByIdentifier($identifier, $storeId = null)
+    {
+        $block = $this->blockFactory->create();
+        $block->setStoreId($storeId);
+        $this->blockResource->load($block, $identifier, BlockInterface::IDENTIFIER);
+
+        if (!$block->getId()) {
+            throw new NoSuchEntityException(
+                __('CMS Block with identifier "%1" does not exist.', $identifier)
+            );
+        }
+
         $content = $this->getBlockContentFiltered($block->getContent());
         $block->setContent($content);
 

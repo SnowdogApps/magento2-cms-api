@@ -7,6 +7,12 @@
             <resource ref="Magento_Cms::page"/>
         </resources>
     </route>
+    <route url="/V1/snowdog/cmsPageIdentifier/:identifier/storeId/:storeId" method="GET">
+        <service class="Snowdog\CmsApi\Api\PageManagerInterface" method="getByIdentifier"/>
+        <resources>
+            <resource ref="Magento_Cms::page"/>
+        </resources>
+    </route>
     <route url="/V1/snowdog/cmsPage/search" method="GET">
         <service class="Snowdog\CmsApi\Api\PageManagerInterface" method="getList"/>
         <resources>
@@ -16,6 +22,12 @@
     <!-- Cms Block -->
     <route url="/V1/snowdog/cmsBlock/:blockId" method="GET">
         <service class="Snowdog\CmsApi\Api\BlockManagerInterface" method="getById"/>
+        <resources>
+            <resource ref="Magento_Cms::block"/>
+        </resources>
+    </route>
+    <route url="/V1/snowdog/cmsBlockIdentifier/:identifier/storeId/:storeId" method="GET">
+        <service class="Snowdog\CmsApi\Api\BlockManagerInterface" method="getByIdentifier"/>
         <resources>
             <resource ref="Magento_Cms::block"/>
         </resources>
