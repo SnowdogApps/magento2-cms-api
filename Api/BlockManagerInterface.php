@@ -14,6 +14,7 @@ interface BlockManagerInterface
      * @param string $identifier
      * @param int $storeId
      * @return \Magento\Cms\Api\Data\BlockInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getByIdentifier($identifier, $storeId = null);
 

@@ -14,6 +14,7 @@ interface PageManagerInterface
      * @param string $identifier
      * @param int $storeId
      * @return \Magento\Cms\Api\Data\PageInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getByIdentifier($identifier, $storeId = null);
 
