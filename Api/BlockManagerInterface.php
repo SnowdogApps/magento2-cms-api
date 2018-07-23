@@ -11,6 +11,14 @@ interface BlockManagerInterface
     public function getById($blockId);
 
     /**
+     * @param string $identifier
+     * @param int $storeId
+     * @return \Magento\Cms\Api\Data\BlockInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getByIdentifier($identifier, $storeId = null);
+
+    /**
      * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
      * @return \Magento\Cms\Api\Data\BlockSearchResultsInterface
      * @throws \Magento\Framework\Exception\LocalizedException
