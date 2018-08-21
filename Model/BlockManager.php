@@ -9,6 +9,8 @@ use Magento\Cms\Model\ResourceModel\Block;
 use Magento\Cms\Model\Template\FilterProvider;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Snowdog\CmsApi\Api\BlockManagerInterface;
+use Magento\Framework\App\State;
+use Magento\Framework\App\Area;
 
 class BlockManager implements BlockManagerInterface
 {
@@ -32,16 +34,23 @@ class BlockManager implements BlockManagerInterface
      */
     private $blockResource;
 
+    /**
+     * @var State
+     */
+    protected $appState;
+
     public function __construct(
         BlockRepositoryInterface $blockRepository,
         FilterProvider $filterProvider,
         BlockFactory $blockFactory,
-        Block $blockResource
+        Block $blockResource,
+        State $appState
     ) {
         $this->blockRepository = $blockRepository;
         $this->filterProvider = $filterProvider;
         $this->blockFactory = $blockFactory;
         $this->blockResource = $blockResource;
+        $this->appState = $appState;
     }
 
     /**
@@ -102,7 +111,12 @@ class BlockManager implements BlockManagerInterface
      */
     private function getBlockContentFiltered($content)
     {
-        return $this->filterProvider->getBlockFilter()
-            ->filter($content);
+        $emulatedResult = $this->appState->emulateAreaCode(
+            Area::AREA_FRONTEND,
+            [$this->filterProvider->getBlockFilter(), 'filter'],
+            [$content]
+        );
+
+        return $emulatedResult;
     }
 }
