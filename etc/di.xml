@@ -4,4 +4,6 @@
                 type="Snowdog\CmsApi\Model\PageManager" />
     <preference for="Snowdog\CmsApi\Api\BlockManagerInterface"
                 type="Snowdog\CmsApi\Model\BlockManager" />
+    <preference for="Snowdog\CmsApi\Api\Data\BlockInterface"
+                type="Snowdog\CmsApi\Model\Block" />
 </config>
