@@ -87,8 +87,9 @@ class BlockManager implements BlockManagerInterface
         $parsedBlocks = [];
 
         foreach ($blocks as $block) {
-            $content = $this->getBlockContentFiltered($block->getContent());
-            $parsedBlocks[] = $block->setContent($content);
+            $content = $this->getBlockContentFiltered($block['content']);
+            $block['content'] = $content;
+            $parsedBlocks[] = $block;
         }
 
         $blockCollection->setItems($parsedBlocks);
