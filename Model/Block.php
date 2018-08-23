@@ -4,24 +4,24 @@ namespace Snowdog\CmsApi\Model;
 
 use Snowdog\CmsApi\Api\Data\BlockInterface;
 
-class Block extends Magento\Cms\Model\Block implements BlockInterface
+class Block extends \Magento\Cms\Model\Block implements BlockInterface
 {
     /**
-     * Receive page store ids
+     * Receive Block store ids
      *
      * @return int[]
      */
-    public function getStores()
+    public function getStoreId()
     {
         return $this->hasData('stores') ? $this->getData('stores') : $this->getData('store_id');
     }
 
     /**
-     * @param array $storeIds
+     * @param array $storeId
      * @return BlockInterface
      */
-    public function setStores($storeIds)
+    public function setStoreId(array $storeId)
     {
-        return $this->setData(self::STORES, $storeIds);
+        return $this->setData(self::STORE_ID, $storeId);
     }
 }

@@ -6,24 +6,24 @@ namespace Snowdog\CmsApi\Api\Data;
  * CMS block interface.
  * @api
  */
-interface BlockInterface extends Magento\Cms\Api\Data\BlockInterface
+interface BlockInterface extends \Magento\Cms\Api\Data\BlockInterface
 {
     /**#@+
      * Constants for keys of data array. Identical to the name of the getter in snake case
      */
-    const STORES = 'stores';
+    const STORE_ID = 'store_id';
     /**#@-*/
 
     /**
      * Get store ids
      *
-     * @return array|null
+     * @return int[]
      */
-    public function getStores();
+    public function getStoreId();
 
     /**
-     * @param array $storeIds
+     * @param array $storeId
      * @return BlockInterface
      */
-    public function setStores($storeIds);
+    public function setStoreId(array $storeId);
 }
