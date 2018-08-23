@@ -6,8 +6,10 @@
                 type="Snowdog\CmsApi\Model\BlockManager" />
     <preference for="Snowdog\CmsApi\Api\Data\BlockInterface"
                 type="Snowdog\CmsApi\Model\Block" />
+    <preference for="Snowdog\CmsApi\Api\Data\PageInterface"
+                type="Snowdog\CmsApi\Model\Page" />
     <preference for="Magento\Cms\Model\BlockRepository"
                 type="Snowdog\CmsApi\Model\BlockRepository" />
-    <preference for="Magento\Cms\Model\Block"
-                type="Snowdog\CmsApi\Model\Block" />
+    <preference for="Magento\Cms\Model\PageRepository"
+                type="Snowdog\CmsApi\Model\PageRepository" />
 </config>

@@ -3,40 +3,40 @@
 namespace Snowdog\CmsApi\Model;
 
 use Magento\Cms\Api\Data;
-use Magento\Cms\Api\BlockRepositoryInterface;
+use Magento\Cms\Api\PageRepositoryInterface;
 use Magento\Framework\Api\DataObjectHelper;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Reflection\DataObjectProcessor;
-use Magento\Cms\Model\ResourceModel\Block as ResourceBlock;
-use Magento\Cms\Model\ResourceModel\Block\CollectionFactory as BlockCollectionFactory;
+use Magento\Cms\Model\ResourceModel\Page as ResourcePage;
+use Magento\Cms\Model\ResourceModel\Page\CollectionFactory as PageCollectionFactory;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
- * Class BlockRepository
+ * Class PageRepository
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class BlockRepository extends \Magento\Cms\Model\BlockRepository
+class PageRepository extends \Magento\Cms\Model\PageRepository
 {
     /**
-     * @var ResourceBlock
+     * @var ResourcePage
      */
     protected $resource;
 
     /**
-     * @var BlockFactory
+     * @var PageFactory
      */
-    protected $blockFactory;
+    protected $pageFactory;
 
     /**
-     * @var BlockCollectionFactory
+     * @var PageCollectionFactory
      */
-    protected $blockCollectionFactory;
+    protected $pageCollectionFactory;
 
     /**
-     * @var Data\BlockSearchResultsInterfaceFactory
+     * @var Data\PageSearchResultsInterfaceFactory
      */
     protected $searchResultsFactory;
 
@@ -51,9 +51,9 @@ class BlockRepository extends \Magento\Cms\Model\BlockRepository
     protected $dataObjectProcessor;
 
     /**
-     * @var \Snowdog\CmsApi\Api\Data\BlockInterfaceFactory
+     * @var \Snowdog\CmsApi\Api\Data\PageInterfaceFactory
      */
-    protected $dataBlockFactory;
+    protected $dataPageFactory;
 
     /**
      * @var \Magento\Store\Model\StoreManagerInterface
@@ -61,49 +61,49 @@ class BlockRepository extends \Magento\Cms\Model\BlockRepository
     private $storeManager;
 
     /**
-     * @param ResourceBlock $resource
-     * @param BlockFactory $blockFactory
-     * @param \Snowdog\CmsApi\Api\Data\BlockInterfaceFactory $dataBlockFactory
-     * @param BlockCollectionFactory $blockCollectionFactory
-     * @param Data\BlockSearchResultsInterfaceFactory $searchResultsFactory
+     * @param ResourcePage $resource
+     * @param PageFactory $pageFactory
+     * @param \Snowdog\CmsApi\Api\Data\PageInterfaceFactory $dataPageFactory
+     * @param PageCollectionFactory $pageCollectionFactory
+     * @param Data\PageSearchResultsInterfaceFactory $searchResultsFactory
      * @param DataObjectHelper $dataObjectHelper
      * @param DataObjectProcessor $dataObjectProcessor
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        ResourceBlock $resource,
-        BlockFactory $blockFactory,
-        \Snowdog\CmsApi\Api\Data\BlockInterfaceFactory $dataBlockFactory,
-        BlockCollectionFactory $blockCollectionFactory,
-        Data\BlockSearchResultsInterfaceFactory $searchResultsFactory,
+        ResourcePage $resource,
+        PageFactory $pageFactory,
+        \Snowdog\CmsApi\Api\Data\PageInterfaceFactory $dataPageFactory,
+        PageCollectionFactory $pageCollectionFactory,
+        Data\PageSearchResultsInterfaceFactory $searchResultsFactory,
         DataObjectHelper $dataObjectHelper,
         DataObjectProcessor $dataObjectProcessor,
         StoreManagerInterface $storeManager
     ) {
         $this->resource = $resource;
-        $this->blockFactory = $blockFactory;
-        $this->blockCollectionFactory = $blockCollectionFactory;
+        $this->pageFactory = $pageFactory;
+        $this->pageCollectionFactory = $pageCollectionFactory;
         $this->searchResultsFactory = $searchResultsFactory;
         $this->dataObjectHelper = $dataObjectHelper;
-        $this->dataBlockFactory = $dataBlockFactory;
+        $this->dataPageFactory = $dataPageFactory;
         $this->dataObjectProcessor = $dataObjectProcessor;
         $this->storeManager = $storeManager;
     }
 
     /**
-     * Load Block data collection by given search criteria
+     * Load Page data collection by given search criteria
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @param \Magento\Framework\Api\SearchCriteriaInterface $criteria
-     * @return \Magento\Cms\Model\ResourceModel\Block\Collection
+     * @return \Magento\Cms\Model\ResourceModel\Page\Collection
      */
     public function getList(\Magento\Framework\Api\SearchCriteriaInterface $criteria)
     {
         $searchResults = $this->searchResultsFactory->create();
         $searchResults->setSearchCriteria($criteria);
 
-        $collection = $this->blockCollectionFactory->create();
+        $collection = $this->pageCollectionFactory->create();
         foreach ($criteria->getFilterGroups() as $filterGroup) {
             foreach ($filterGroup->getFilters() as $filter) {
                 if ($filter->getField() === 'store_id') {
@@ -117,6 +117,7 @@ class BlockRepository extends \Magento\Cms\Model\BlockRepository
         $searchResults->setTotalCount($collection->getSize());
         $sortOrders = $criteria->getSortOrders();
         if ($sortOrders) {
+            /** @var SortOrder $sortOrder */
             foreach ($sortOrders as $sortOrder) {
                 $collection->addOrder(
                     $sortOrder->getField(),
@@ -126,21 +127,21 @@ class BlockRepository extends \Magento\Cms\Model\BlockRepository
         }
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
-        $blocks = [];
-        /** @var \Snowdog\CmsApi\Model\Block $blockModel */
-        foreach ($collection as $blockModel) {
-            $blockData = $this->dataBlockFactory->create();
+        $pages = [];
+        /** @var \Snowdog\CmsApi\Model\Page $pageModel */
+        foreach ($collection as $pageModel) {
+            $pageData = $this->dataPageFactory->create();
             $this->dataObjectHelper->populateWithArray(
-                $blockData,
-                $blockModel->getData(),
-                'Snowdog\CmsApi\Api\Data\BlockInterface'
+                $pageData,
+                $pageModel->getData(),
+                'Snowdog\CmsApi\Api\Data\PageInterface'
             );
-            $blocks[] = $this->dataObjectProcessor->buildOutputDataArray(
-                $blockData,
-                'Snowdog\CmsApi\Api\Data\BlockInterface'
+            $pages[] = $this->dataObjectProcessor->buildOutputDataArray(
+                $pageData,
+                'Snowdog\CmsApi\Api\Data\PageInterface'
             );
         }
-        $searchResults->setItems($blocks);
+        $searchResults->setItems($pages);
 
         return $searchResults;
     }

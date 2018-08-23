@@ -87,8 +87,9 @@ class PageManager implements PageManagerInterface
         $parsedPages = [];
 
         foreach ($pages as $page) {
-            $content = $this->getPageContentFiltered($page->getContent());
-            $parsedPages[] = $page->setContent($content);
+            $content = $this->getPageContentFiltered($page['content']);
+            $page['content'] = $content;
+            $parsedPages[] = $page;
         }
 
         $pageCollection->setItems($parsedPages);
