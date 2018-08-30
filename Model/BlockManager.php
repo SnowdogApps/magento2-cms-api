@@ -157,7 +157,7 @@ class BlockManager implements BlockManagerInterface
         $searchResults = $this->searchResultsFactory->create();
         $searchResults->setSearchCriteria($searchCriteria);
         $searchResults->setItems($items);
-        $searchResults->setTotalCount($collection->getSize());
+        $searchResults->setTotalCount(count($items));
 
         return $searchResults;
     }
