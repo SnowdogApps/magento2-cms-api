@@ -7,21 +7,20 @@ use Snowdog\CmsApi\Api\Data\PageInterface;
 class Page extends \Magento\Cms\Model\Page implements PageInterface
 {
     /**
-     * Receive Page store ids
-     *
-     * @return int[]
+     * @inheritdoc
      */
     public function getStoreId()
     {
-        return $this->hasData('stores') ? $this->getData('stores') : (array)$this->getData('store_id');
+        return $this->_getData(self::STORE_ID);
     }
 
     /**
-     * @param array $storeId
-     * @return PageInterface
+     * @inheritdoc
      */
-    public function setStoreId(array $storeId)
+    public function setStoreId(array $storeIds)
     {
-        return $this->setData(self::STORE_ID, $storeId);
+        $this->setData(self::STORE_ID, $storeIds);
+
+        return $this;
     }
 }

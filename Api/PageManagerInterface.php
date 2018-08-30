@@ -20,7 +20,7 @@ interface PageManagerInterface
 
     /**
      * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
-     * @return \Magento\Cms\Api\Data\PageSearchResultsInterface
+     * @return \Snowdog\CmsApi\Api\Data\PageSearchResultsInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getList(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria);

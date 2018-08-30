@@ -2,10 +2,6 @@
 
 namespace Snowdog\CmsApi\Api\Data;
 
-/**
- * CMS page interface.
- * @api
- */
 interface PageInterface extends \Magento\Cms\Api\Data\PageInterface
 {
     /**#@+
@@ -15,15 +11,13 @@ interface PageInterface extends \Magento\Cms\Api\Data\PageInterface
     /**#@-*/
 
     /**
-     * Get store ids
-     *
      * @return int[]
      */
     public function getStoreId();
 
     /**
-     * @param array $storeId
+     * @param int[] $storeIds
      * @return BlockInterface
      */
-    public function setStoreId(array $storeId);
+    public function setStoreId(array $storeIds);
 }

@@ -7,21 +7,20 @@ use Snowdog\CmsApi\Api\Data\BlockInterface;
 class Block extends \Magento\Cms\Model\Block implements BlockInterface
 {
     /**
-     * Receive Block store ids
-     *
-     * @return int[]
+     * @inheritdoc
      */
     public function getStoreId()
     {
-        return $this->hasData('stores') ? $this->getData('stores') : $this->getData('store_id');
+        return $this->_getData(self::STORE_ID);
     }
 
     /**
-     * @param array $storeId
-     * @return BlockInterface
+     * @inheritdoc
      */
-    public function setStoreId(array $storeId)
+    public function setStoreId(array $storeIds)
     {
-        return $this->setData(self::STORE_ID, $storeId);
+        $this->setData(self::STORE_ID, $storeIds);
+
+        return $this;
     }
 }
