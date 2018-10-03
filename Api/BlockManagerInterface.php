@@ -20,7 +20,7 @@ interface BlockManagerInterface
 
     /**
      * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
-     * @return \Magento\Cms\Api\Data\BlockSearchResultsInterface
+     * @return \Snowdog\CmsApi\Api\Data\BlockSearchResultsInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getList(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria);
