@@ -13,6 +13,8 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Snowdog\CmsApi\Api\Data\PageInterfaceFactory;
 use Snowdog\CmsApi\Api\Data\PageSearchResultsInterfaceFactory;
 use Snowdog\CmsApi\Api\PageManagerInterface;
+use Magento\Framework\App\State;
+use Magento\Framework\App\Area;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -65,6 +67,11 @@ class PageManager implements PageManagerInterface
     private $dataObjectHelper;
 
     /**
+     * @var State
+     */
+    protected $appState;
+
+    /**
      * @param PageRepositoryInterface $pageRepository
      * @param FilterProvider $filterProvider
      * @param PageFactory $pageFactory
@@ -74,6 +81,7 @@ class PageManager implements PageManagerInterface
      * @param CollectionProcessorInterface $collectionProcessor
      * @param PageInterfaceFactory $pageDtoFactory
      * @param DataObjectHelper $dataObjectHelper
+     * @param State $appState
      */
     public function __construct(
         PageRepositoryInterface $pageRepository,
@@ -84,7 +92,8 @@ class PageManager implements PageManagerInterface
         PageSearchResultsInterfaceFactory $searchResultsFactory,
         CollectionProcessorInterface $collectionProcessor,
         PageInterfaceFactory $pageDtoFactory,
-        DataObjectHelper $dataObjectHelper
+        DataObjectHelper $dataObjectHelper,
+        State $appState
     ) {
         $this->pageRepository = $pageRepository;
         $this->filterProvider = $filterProvider;
@@ -95,6 +104,7 @@ class PageManager implements PageManagerInterface
         $this->collectionProcessor = $collectionProcessor;
         $this->pageDtoFactory = $pageDtoFactory;
         $this->dataObjectHelper = $dataObjectHelper;
+        $this->appState = $appState;
     }
 
     /**
@@ -168,7 +178,12 @@ class PageManager implements PageManagerInterface
      */
     private function getPageContentFiltered($content)
     {
-        return $this->filterProvider->getPageFilter()
-            ->filter($content);
+        $emulatedResult = $this->appState->emulateAreaCode(
+            Area::AREA_FRONTEND,
+            [$this->filterProvider->getPageFilter(), 'filter'],
+            [$content]
+        );
+
+        return $emulatedResult;
     }
 }

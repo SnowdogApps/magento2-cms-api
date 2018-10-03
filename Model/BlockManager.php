@@ -13,6 +13,8 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Snowdog\CmsApi\Api\BlockManagerInterface;
 use Snowdog\CmsApi\Api\Data\BlockInterfaceFactory;
 use Snowdog\CmsApi\Api\Data\BlockSearchResultsInterfaceFactory;
+use Magento\Framework\App\State;
+use Magento\Framework\App\Area;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -65,6 +67,11 @@ class BlockManager implements BlockManagerInterface
     private $dataObjectHelper;
 
     /**
+     * @var State
+     */
+    protected $appState;
+
+    /**
      * @param BlockRepositoryInterface $blockRepository
      * @param FilterProvider $filterProvider
      * @param BlockFactory $blockFactory
@@ -74,6 +81,7 @@ class BlockManager implements BlockManagerInterface
      * @param CollectionProcessorInterface $collectionProcessor
      * @param BlockInterfaceFactory $blockDtoFactory
      * @param DataObjectHelper $dataObjectHelper
+     * @param State $appState
      */
     public function __construct(
         BlockRepositoryInterface $blockRepository,
@@ -84,7 +92,8 @@ class BlockManager implements BlockManagerInterface
         BlockSearchResultsInterfaceFactory $searchResultsFactory,
         CollectionProcessorInterface $collectionProcessor,
         BlockInterfaceFactory $blockDtoFactory,
-        DataObjectHelper $dataObjectHelper
+        DataObjectHelper $dataObjectHelper,
+        State $appState
     ) {
         $this->blockRepository = $blockRepository;
         $this->filterProvider = $filterProvider;
@@ -95,6 +104,7 @@ class BlockManager implements BlockManagerInterface
         $this->collectionProcessor = $collectionProcessor;
         $this->blockDtoFactory = $blockDtoFactory;
         $this->dataObjectHelper = $dataObjectHelper;
+        $this->appState = $appState;
     }
 
     /**
@@ -168,7 +178,12 @@ class BlockManager implements BlockManagerInterface
      */
     private function getBlockContentFiltered($content)
     {
-        return $this->filterProvider->getBlockFilter()
-            ->filter($content);
+        $emulatedResult = $this->appState->emulateAreaCode(
+            Area::AREA_FRONTEND,
+            [$this->filterProvider->getBlockFilter(), 'filter'],
+            [$content]
+        );
+
+        return $emulatedResult;
     }
 }
