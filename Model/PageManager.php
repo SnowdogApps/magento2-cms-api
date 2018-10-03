@@ -9,6 +9,8 @@ use Magento\Cms\Model\ResourceModel\Page;
 use Magento\Cms\Model\Template\FilterProvider;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Snowdog\CmsApi\Api\PageManagerInterface;
+use Magento\Framework\App\State;
+use Magento\Framework\App\Area;
 
 class PageManager implements PageManagerInterface
 {
@@ -32,16 +34,23 @@ class PageManager implements PageManagerInterface
      */
     private $pageResource;
 
+    /**
+     * @var State
+     */
+    protected $appState;
+
     public function __construct(
         PageRepositoryInterface $pageRepository,
         FilterProvider $filterProvider,
         PageFactory $pageFactory,
-        Page $pageResource
+        Page $pageResource,
+        State $appState
     ) {
         $this->pageRepository = $pageRepository;
         $this->filterProvider = $filterProvider;
         $this->pageFactory = $pageFactory;
         $this->pageResource = $pageResource;
+        $this->appState = $appState;
     }
 
     /**
@@ -102,7 +111,12 @@ class PageManager implements PageManagerInterface
      */
     private function getPageContentFiltered($content)
     {
-        return $this->filterProvider->getPageFilter()
-            ->filter($content);
+        $emulatedResult = $this->appState->emulateAreaCode(
+            Area::AREA_FRONTEND,
+            [$this->filterProvider->getPageFilter(), 'filter'],
+            [$content]
+        );
+
+        return $emulatedResult;
     }
 }
