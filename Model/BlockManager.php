@@ -10,6 +10,7 @@ use Magento\Cms\Model\Template\FilterProvider;
 use Magento\Framework\Api\DataObjectHelper;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Model\App\Emulation;
 use Snowdog\CmsApi\Api\BlockManagerInterface;
 use Snowdog\CmsApi\Api\Data\BlockInterfaceFactory;
 use Snowdog\CmsApi\Api\Data\BlockSearchResultsInterfaceFactory;
@@ -19,7 +20,7 @@ use Magento\Framework\App\Area;
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class BlockManager implements BlockManagerInterface
+class BlockManager extends ManagerBase implements BlockManagerInterface
 {
     /**
      * @var BlockRepositoryInterface
@@ -69,7 +70,12 @@ class BlockManager implements BlockManagerInterface
     /**
      * @var State
      */
-    protected $appState;
+    private $appState;
+
+    /**
+     * @var Emulation
+     */
+    private $emulation;
 
     /**
      * @param BlockRepositoryInterface $blockRepository
@@ -82,6 +88,7 @@ class BlockManager implements BlockManagerInterface
      * @param BlockInterfaceFactory $blockDtoFactory
      * @param DataObjectHelper $dataObjectHelper
      * @param State $appState
+     * @param Emulation $emulation
      */
     public function __construct(
         BlockRepositoryInterface $blockRepository,
@@ -93,7 +100,8 @@ class BlockManager implements BlockManagerInterface
         CollectionProcessorInterface $collectionProcessor,
         BlockInterfaceFactory $blockDtoFactory,
         DataObjectHelper $dataObjectHelper,
-        State $appState
+        State $appState,
+        Emulation $emulation
     ) {
         $this->blockRepository = $blockRepository;
         $this->filterProvider = $filterProvider;
@@ -105,6 +113,7 @@ class BlockManager implements BlockManagerInterface
         $this->blockDtoFactory = $blockDtoFactory;
         $this->dataObjectHelper = $dataObjectHelper;
         $this->appState = $appState;
+        $this->emulation = $emulation;
     }
 
     /**
@@ -145,9 +154,11 @@ class BlockManager implements BlockManagerInterface
      */
     public function getList(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria)
     {
+        $storeId = $this->getStoreIdBySearchCriteria($searchCriteria);
+        $this->emulation->startEnvironmentEmulation($storeId);
+
         /** @var \Magento\Cms\Model\ResourceModel\Block\Collection $collection */
         $collection = $this->blockCollectionFactory->create();
-
         $this->collectionProcessor->process($searchCriteria, $collection);
 
         $items = [];
@@ -168,6 +179,8 @@ class BlockManager implements BlockManagerInterface
         $searchResults->setSearchCriteria($searchCriteria);
         $searchResults->setItems($items);
         $searchResults->setTotalCount(count($items));
+
+        $this->emulation->stopEnvironmentEmulation();
 
         return $searchResults;
     }
