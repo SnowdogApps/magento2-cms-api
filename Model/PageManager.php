@@ -10,6 +10,7 @@ use Magento\Cms\Model\Template\FilterProvider;
 use Magento\Framework\Api\DataObjectHelper;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Model\App\Emulation;
 use Snowdog\CmsApi\Api\Data\PageInterfaceFactory;
 use Snowdog\CmsApi\Api\Data\PageSearchResultsInterfaceFactory;
 use Snowdog\CmsApi\Api\PageManagerInterface;
@@ -19,7 +20,7 @@ use Magento\Framework\App\Area;
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class PageManager implements PageManagerInterface
+class PageManager extends ManagerBase implements PageManagerInterface
 {
     /**
      * @var PageRepositoryInterface
@@ -69,7 +70,12 @@ class PageManager implements PageManagerInterface
     /**
      * @var State
      */
-    protected $appState;
+    private $appState;
+
+    /**
+     * @var Emulation
+     */
+    private $emulation;
 
     /**
      * @param PageRepositoryInterface $pageRepository
@@ -82,6 +88,7 @@ class PageManager implements PageManagerInterface
      * @param PageInterfaceFactory $pageDtoFactory
      * @param DataObjectHelper $dataObjectHelper
      * @param State $appState
+     * @param Emulation $emulation
      */
     public function __construct(
         PageRepositoryInterface $pageRepository,
@@ -93,7 +100,8 @@ class PageManager implements PageManagerInterface
         CollectionProcessorInterface $collectionProcessor,
         PageInterfaceFactory $pageDtoFactory,
         DataObjectHelper $dataObjectHelper,
-        State $appState
+        State $appState,
+        Emulation $emulation
     ) {
         $this->pageRepository = $pageRepository;
         $this->filterProvider = $filterProvider;
@@ -105,6 +113,7 @@ class PageManager implements PageManagerInterface
         $this->pageDtoFactory = $pageDtoFactory;
         $this->dataObjectHelper = $dataObjectHelper;
         $this->appState = $appState;
+        $this->emulation = $emulation;
     }
 
     /**
@@ -145,9 +154,11 @@ class PageManager implements PageManagerInterface
      */
     public function getList(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria)
     {
+        $storeId = $this->getStoreIdBySearchCriteria($searchCriteria);
+        $this->emulation->startEnvironmentEmulation($storeId);
+
         /** @var \Magento\Cms\Model\ResourceModel\Page\Collection $collection */
         $collection = $this->pageCollectionFactory->create();
-
         $this->collectionProcessor->process($searchCriteria, $collection);
 
         $items = [];
@@ -168,6 +179,8 @@ class PageManager implements PageManagerInterface
         $searchResults->setSearchCriteria($searchCriteria);
         $searchResults->setItems($items);
         $searchResults->setTotalCount(count($items));
+
+        $this->emulation->stopEnvironmentEmulation();
 
         return $searchResults;
     }
