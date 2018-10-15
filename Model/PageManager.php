@@ -70,7 +70,7 @@ class PageManager extends ManagerBase implements PageManagerInterface
     /**
      * @var State
      */
-    protected $appState;
+    private $appState;
 
     /**
      * @var Emulation
