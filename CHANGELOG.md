@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.3.1] 2018-11-20
+* Fixed missing page and block id in search endpoint responses
+
 ## [1.3.0] 2018-10-15
 * If searchCriteria contains only one store_id as filter, the content for blocks/pages will be loaded for the given store id. 
 
