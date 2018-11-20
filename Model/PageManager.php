@@ -172,6 +172,7 @@ class PageManager extends ManagerBase implements PageManagerInterface
                 $page->getData(),
                 \Snowdog\CmsApi\Api\Data\PageInterface::class
             );
+            $pageDto->setId($page->getId());
             $items[] = $pageDto;
         }
 

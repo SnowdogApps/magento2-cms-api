@@ -172,6 +172,7 @@ class BlockManager extends ManagerBase implements BlockManagerInterface
                 $block->getData(),
                 \Snowdog\CmsApi\Api\Data\BlockInterface::class
             );
+            $blockDto->setId($block->getId());
             $items[] = $blockDto;
         }
 
