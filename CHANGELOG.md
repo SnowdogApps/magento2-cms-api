@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] 2019-01-21
+* Added compatibility with PHP 7.2.x in composer file
+
 ## [1.4.0] 2018-12-31
 * Added compatiblity with Magento 2.3.0 in composer file
 
