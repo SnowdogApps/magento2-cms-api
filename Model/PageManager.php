@@ -11,11 +11,13 @@ use Magento\Framework\Api\DataObjectHelper;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\App\Emulation;
+use Magento\Store\Model\StoreManagerInterface;
 use Snowdog\CmsApi\Api\Data\PageInterfaceFactory;
 use Snowdog\CmsApi\Api\Data\PageSearchResultsInterfaceFactory;
 use Snowdog\CmsApi\Api\PageManagerInterface;
 use Magento\Framework\App\State;
 use Magento\Framework\App\Area;
+use Magento\Framework\UrlInterface;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -89,6 +91,8 @@ class PageManager extends ManagerBase implements PageManagerInterface
      * @param DataObjectHelper $dataObjectHelper
      * @param State $appState
      * @param Emulation $emulation
+     * @param UrlInterface $url
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         PageRepositoryInterface $pageRepository,
@@ -101,7 +105,9 @@ class PageManager extends ManagerBase implements PageManagerInterface
         PageInterfaceFactory $pageDtoFactory,
         DataObjectHelper $dataObjectHelper,
         State $appState,
-        Emulation $emulation
+        Emulation $emulation,
+        UrlInterface $url,
+        StoreManagerInterface $storeManager
     ) {
         $this->pageRepository = $pageRepository;
         $this->filterProvider = $filterProvider;
@@ -114,6 +120,8 @@ class PageManager extends ManagerBase implements PageManagerInterface
         $this->dataObjectHelper = $dataObjectHelper;
         $this->appState = $appState;
         $this->emulation = $emulation;
+
+        parent::__construct($url, $storeManager);
     }
 
     /**
