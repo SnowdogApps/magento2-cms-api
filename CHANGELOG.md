@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.0] 2019-10-25
+* Added compatibility with PHP 7.3.x in composer file (thanks to @WJdeBaas)
+
 ## [1.5.0] 2019-01-21
 * Added compatibility with PHP 7.2.x in composer file
 
