@@ -155,7 +155,10 @@ class PageManager extends ManagerBase implements PageManagerInterface
     public function getList(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria)
     {
         $storeId = $this->getStoreIdBySearchCriteria($searchCriteria);
-        $this->emulation->startEnvironmentEmulation($storeId);
+
+        if ($storeId !== null) {
+            $this->emulation->startEnvironmentEmulation($storeId);
+        }
 
         /** @var \Magento\Cms\Model\ResourceModel\Page\Collection $collection */
         $collection = $this->pageCollectionFactory->create();
@@ -181,7 +184,9 @@ class PageManager extends ManagerBase implements PageManagerInterface
         $searchResults->setItems($items);
         $searchResults->setTotalCount(count($items));
 
-        $this->emulation->stopEnvironmentEmulation();
+        if ($storeId !== null) {
+            $this->emulation->stopEnvironmentEmulation();
+        }
 
         return $searchResults;
     }
