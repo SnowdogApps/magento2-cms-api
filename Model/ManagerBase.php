@@ -24,6 +24,10 @@ class ManagerBase
 
             if (count($storeIds) > 1) {
                 return 0; // default store
+            } else {
+                // if store_id wasn't passed as a filter,
+                // we should not continue with store emulation
+                return null;
             }
         }
 

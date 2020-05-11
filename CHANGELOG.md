@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.7.0] 2020-05-11
+* Fixed: blocking store emulation if no `store_id` parameter is passed through search criteria filters.
+
 ## [1.6.0] 2019-10-25
 * Added compatibility with PHP 7.3.x in composer file (thanks to @WJdeBaas)
 
@@ -8,7 +11,7 @@ All notable changes to this project will be documented in this file.
 * Added compatibility with PHP 7.2.x in composer file
 
 ## [1.4.0] 2018-12-31
-* Added compatiblity with Magento 2.3.0 in composer file
+* Added compatibility with Magento 2.3.0 in composer file
 
 ## [1.3.1] 2018-11-20
 * Fixed missing page and block id in search endpoint responses

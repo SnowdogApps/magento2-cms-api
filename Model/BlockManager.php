@@ -155,7 +155,10 @@ class BlockManager extends ManagerBase implements BlockManagerInterface
     public function getList(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria)
     {
         $storeId = $this->getStoreIdBySearchCriteria($searchCriteria);
-        $this->emulation->startEnvironmentEmulation($storeId);
+
+        if ($storeId !== null) {
+            $this->emulation->startEnvironmentEmulation($storeId);
+        }
 
         /** @var \Magento\Cms\Model\ResourceModel\Block\Collection $collection */
         $collection = $this->blockCollectionFactory->create();
@@ -181,7 +184,9 @@ class BlockManager extends ManagerBase implements BlockManagerInterface
         $searchResults->setItems($items);
         $searchResults->setTotalCount(count($items));
 
-        $this->emulation->stopEnvironmentEmulation();
+        if ($storeId !== null) {
+            $this->emulation->stopEnvironmentEmulation();
+        }
 
         return $searchResults;
     }
