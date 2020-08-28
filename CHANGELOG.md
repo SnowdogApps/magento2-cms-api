@@ -2,6 +2,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [1.8.0] 2020-08-28
 * Added license file.
 
 ## [1.7.0] 2020-05-11
