@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+## [1.8.0] 2020-08-28
+* Added license file.
+
 ## [1.7.0] 2020-05-11
 * Fixed: blocking store emulation if no `store_id` parameter is passed through search criteria filters.
 
