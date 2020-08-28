@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2017 Snowdog Apps
+Copyright (c) 2020 Snowdog Apps
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
