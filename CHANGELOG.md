@@ -2,6 +2,7 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+* Enabled Magento `2.4.0` support in `composer.json`
 
 ## [1.8.0] 2020-08-28
 * Added license file.
