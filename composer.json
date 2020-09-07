@@ -2,8 +2,8 @@
     "name": "snowdog/module-cms-api",
     "description": "Custom CMS API endpoints which retrieves CMS pages and blocks filtered",
     "require": {
-        "magento/framework": "101.0.*|102.0.*",
-        "magento/module-cms": "102.0.*|103.0.*",
+        "magento/framework": "101.0.*|102.0.*|103.0.*",
+        "magento/module-cms": "102.0.*|103.0.*|104.0.*",
         "php": "7.0.2|7.0.4|~7.0.6|~7.1.0|~7.2.0|~7.3.0"
     },
     "license": "MIT",
