@@ -2,6 +2,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [1.10.0] 2020-09-24
 * Enabled PHP `7.4` support in `composer.json`
 
 ## [1.9.0] 2020-09-07
