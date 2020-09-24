@@ -2,6 +2,7 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+* Enabled PHP `7.4` support in `composer.json`
 
 ## [1.9.0] 2020-09-07
 * Enabled Magento `2.4` support in `composer.json`
